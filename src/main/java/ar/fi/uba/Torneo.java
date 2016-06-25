@@ -52,8 +52,8 @@ public class Torneo {
             while (ronda <= this.rondas) {
                 for (List<Jugador> jugadoresEstrategiaRonda : this.jugadores) {
                     for (Jugador jugador1 : jugadoresEstrategiaRonda) {
-                        for (List<Jugador> jugadoresStrategia : this.jugadores) {
-                            for (Jugador jugador2 : jugadoresStrategia) {
+                        for (List<Jugador> jugadoresEstrategia : this.jugadores) {
+                            for (Jugador jugador2 : jugadoresEstrategia) {
                                 this.jugarRonda.calcular(jugador1, jugador2);
                             }
                         }
@@ -110,7 +110,7 @@ public class Torneo {
     }
     
     private Jugador determinarEstrategia(Jugador jugador) {
-        Class clase = null;
+        Class<?> clase = null;
         Jugador jug = null;
         try {
             clase = Class.forName(Constante.PACKAGE_ESTRATEGIAS + jugador.estrategia());

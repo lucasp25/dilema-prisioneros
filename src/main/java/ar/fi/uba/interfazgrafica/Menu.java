@@ -20,6 +20,7 @@ import javax.swing.JTextField;
 import ar.fi.uba.Configuracion;
 import ar.fi.uba.Constante;
 import ar.fi.uba.Torneo;
+import ar.fi.uba.graficos.Grafico;
 
 public class Menu extends JFrame {
 
@@ -139,7 +140,7 @@ public class Menu extends JFrame {
                 Torneo torneo = new Torneo(conf.cargarEstrategias(), Integer.valueOf(generacionText.getText()), 
                         Integer.valueOf(rondaText.getText()));
                 torneo.jugar();
-                //Grafico grafico = new Grafico();
+                Grafico grafico = new Grafico();
             }
         };
     }

@@ -4,7 +4,7 @@ public abstract class Jugador implements Estrategia {
 
     private Long puntos = 0L;
 
-    protected Boolean jugada;
+    protected Boolean jugada; // true si coopera, false si traiciona
 
     protected Boolean ultimaJugada;
     

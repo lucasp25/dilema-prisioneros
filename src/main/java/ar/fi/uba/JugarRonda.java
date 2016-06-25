@@ -15,12 +15,12 @@ public class JugarRonda {
         jugador1.resultado(jugador2.getUltimaJugada());
         jugador2.resultado(jugador1.getUltimaJugada());
        
-        if (jugador1.jugar() && jugador1.jugar())  {
+        if (jugador1.jugar() && jugador2.jugar())  {
                jugador1.incrementarPuntuacion(AMBOS_COOPERAN);
-               jugador1.incrementarPuntuacion(AMBOS_COOPERAN);
+               jugador2.incrementarPuntuacion(AMBOS_COOPERAN);
         } else if (!jugador1.jugar() && !jugador2.jugar()) {
             jugador1.incrementarPuntuacion(AMBOS_TRICIONAN);
-            jugador1.incrementarPuntuacion(AMBOS_TRICIONAN);
+            jugador2.incrementarPuntuacion(AMBOS_TRICIONAN);
         } else if (jugador1.jugar()) {
             jugador1.incrementarPuntuacion(COOPERA_EL_OTRO_TRAICIONA);
             jugador2.incrementarPuntuacion(TRAICIONA_EL_OTRO_COOPERA);
