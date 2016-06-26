@@ -16,14 +16,15 @@ public class Torneo {
     Long media = 0L;
     Integer generaciones;
     Integer rondas;
-
+    GuardaPuntajePorEstrategia puntajesPorGeneracion;
+    
     public Torneo(List<JugadoresPorEstrategia> jugadores) {
         this.jugadores = jugadores;
         this.puntajesPorEstrategia = new HashMap<>();
         this.jugarRonda = new JugarRonda();
         this.generaciones = Constante.GENERACIONES;
         this.rondas = Constante.RONDAS;
-
+        this.puntajesPorGeneracion = new GuardaPuntajePorEstrategia();
     }
 
     public Torneo(List<JugadoresPorEstrategia> jugadores, Integer generaciones, Integer rondas) {
@@ -32,6 +33,7 @@ public class Torneo {
         this.jugarRonda = new JugarRonda();
         this.generaciones = generaciones;
         this.rondas = rondas;
+        this.puntajesPorGeneracion = new GuardaPuntajePorEstrategia();
 
     }
 
@@ -63,16 +65,14 @@ public class Torneo {
                 ronda++;
             }
             inicializarMapDePuntajes();
-            calcularPuntosPorEstrategia();
+            calcularPuntosPorEstrategia(generacion);
             agregarOQuitarIndividuosSegunMedia();
             mostrarCantidadIndividuo(generacion);
             generacion++;
-            // TODO calcular puntos de estrategias por generacion y guardar;
-            // agregar y sacar individuos en estrategias.
         }
     }
 
-    private Integer calcularPuntosPorEstrategia() {
+    private void calcularPuntosPorEstrategia(Integer generacion) {
 
         media = 0L;
         for (JugadoresPorEstrategia jugadoresEstrategiaRonda : this.jugadores) {
@@ -83,11 +83,10 @@ public class Torneo {
                 media += jugador1.getPuntos();
             }
             System.out.println("puntaje " + estrategia + " " + puntajesPorEstrategia.get(estrategia));
+            Grafico.agregarDatosPuntaje(estrategia, generacion, puntajesPorEstrategia.get(estrategia));
         }
         media = media / 5;
         System.out.println("Media:" + media);
-
-        return null;
     }
 
     private void agregarOQuitarIndividuosSegunMedia() throws Exception {
@@ -139,7 +138,11 @@ public class Torneo {
             System.out.println(
                     "Cantidad de individuos de estrategia " + estrategia + ": " + jugadoresEstrategiaRonda.getJugadores().size());
 
-            Grafico.agregarDatos(estrategia, generacion, jugadoresEstrategiaRonda.getJugadores().size());
+            Grafico.agregarDatosCantidad(estrategia, generacion, jugadoresEstrategiaRonda.getJugadores().size());
         }
     }
+    
+    public GuardaPuntajePorEstrategia getPuntajesPorGeneracion() {
+        return puntajesPorGeneracion;
+    }  
 }

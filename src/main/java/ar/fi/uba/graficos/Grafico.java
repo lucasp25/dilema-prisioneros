@@ -14,25 +14,40 @@ import ar.fi.uba.Constante;
 
 public class Grafico {
     
-    private static Map<String, XYSeries> seriesSegunEstrategia = new HashMap<>();
+    private static Map<String, XYSeries> seriesSegunEstrategiaCantidad = new HashMap<>();
+    private static Map<String, XYSeries> seriesSegunEstrategiaPuntaje = new HashMap<>();
     
-    public static void agregarDatos(String estrategia, Integer generacion, Integer cantIndividuos) {
-        seriesSegunEstrategia.get(estrategia).add(generacion, cantIndividuos);
+    public Grafico() {}
+    
+    public static void agregarDatosCantidad(String estrategia, Integer generacion, Integer cantIndividuos) {
+        seriesSegunEstrategiaCantidad.get(estrategia).add(generacion, cantIndividuos);
+    }
+    
+    public static void agregarDatosPuntaje(String estrategia, Integer generacion, Long puntaje) {
+        seriesSegunEstrategiaPuntaje.get(estrategia).add(generacion, puntaje);
     }
     
     static {
-        seriesSegunEstrategia.put(Constante.AL_AZAR,new XYSeries(Constante.AL_AZAR));
-        seriesSegunEstrategia.put(Constante.COOPERA,new XYSeries(Constante.COOPERA));
-        seriesSegunEstrategia.put(Constante.NO_OJO_POR_OJO,new XYSeries(Constante.NO_OJO_POR_OJO));
-        seriesSegunEstrategia.put(Constante.OJO_POR_OJO,new XYSeries(Constante.OJO_POR_OJO));
-        seriesSegunEstrategia.put(Constante.TRAICION,new XYSeries(Constante.TRAICION));
+        seriesSegunEstrategiaCantidad.put(Constante.AL_AZAR,new XYSeries(Constante.AL_AZAR));
+        seriesSegunEstrategiaCantidad.put(Constante.COOPERA,new XYSeries(Constante.COOPERA));
+        seriesSegunEstrategiaCantidad.put(Constante.NO_OJO_POR_OJO,new XYSeries(Constante.NO_OJO_POR_OJO));
+        seriesSegunEstrategiaCantidad.put(Constante.OJO_POR_OJO,new XYSeries(Constante.OJO_POR_OJO));
+        seriesSegunEstrategiaCantidad.put(Constante.TRAICION,new XYSeries(Constante.TRAICION));
     }
     
-    public Grafico() {
-
+    static {
+        seriesSegunEstrategiaPuntaje.put(Constante.AL_AZAR,new XYSeries(Constante.AL_AZAR));
+        seriesSegunEstrategiaPuntaje.put(Constante.COOPERA,new XYSeries(Constante.COOPERA));
+        seriesSegunEstrategiaPuntaje.put(Constante.NO_OJO_POR_OJO,new XYSeries(Constante.NO_OJO_POR_OJO));
+        seriesSegunEstrategiaPuntaje.put(Constante.OJO_POR_OJO,new XYSeries(Constante.OJO_POR_OJO));
+        seriesSegunEstrategiaPuntaje.put(Constante.TRAICION,new XYSeries(Constante.TRAICION));
+    }
+    
+    
+    public void graficoCantidadIndividuos() {
         XYSeriesCollection dataset = new XYSeriesCollection();
 
-        for(XYSeries serie : seriesSegunEstrategia.values()) {
+        for(XYSeries serie : seriesSegunEstrategiaCantidad.values()) {
             dataset.addSeries(serie);
         }
 
@@ -42,7 +57,7 @@ public class Grafico {
                 "Cantidad de Individuos", // Etiqueta Coordenada Y
                 dataset, // Datos
                 PlotOrientation.VERTICAL,
-                true, // Muestra la leyenda de los productos (Producto A)
+                true,
                 false,
                 false
         );
@@ -51,7 +66,32 @@ public class Grafico {
         ChartFrame frame = new ChartFrame("Ejemplo Grafica Lineal", chart);
         frame.pack();
         frame.setVisible(true);
+    }
+    
+    
+    public void graficoPuntajePorEstrategia() {
+        
+        XYSeriesCollection dataset = new XYSeriesCollection();
 
+        for(XYSeries serie : seriesSegunEstrategiaPuntaje.values()) {
+            dataset.addSeries(serie);
+        }
+
+        JFreeChart chart = ChartFactory.createXYLineChart(
+                "Individuos x Generaciones", // Título
+                "Numero de Generacion", // Etiqueta Coordenada X
+                "Puntaje por Estrategia", // Etiqueta Coordenada Y
+                dataset, // Datos
+                PlotOrientation.VERTICAL,
+                true, 
+                false,
+                false
+        );
+
+        // Mostramos la grafica en pantalla
+        ChartFrame frame = new ChartFrame("Ejemplo Grafica Lineal", chart);
+        frame.pack();
+        frame.setVisible(true);
     }
    
 }
