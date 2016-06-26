@@ -19,6 +19,13 @@ public class Grafico {
     
     public Grafico() {}
     
+    public static void limpiarSeries() {
+        putSeriesSegunEstrategiaCantidad();
+        seriesSegunEstrategiaCantidad = new HashMap<>();
+        putSeriesSegunEstrategiaPuntaje();
+        seriesSegunEstrategiaPuntaje = new HashMap<>();
+    }
+    
     public static void agregarDatosCantidad(String estrategia, Integer generacion, Integer cantIndividuos) {
         seriesSegunEstrategiaCantidad.get(estrategia).add(generacion, cantIndividuos);
     }
@@ -28,23 +35,15 @@ public class Grafico {
     }
     
     static {
-        seriesSegunEstrategiaCantidad.put(Constante.AL_AZAR,new XYSeries(Constante.AL_AZAR));
-        seriesSegunEstrategiaCantidad.put(Constante.COOPERA,new XYSeries(Constante.COOPERA));
-        seriesSegunEstrategiaCantidad.put(Constante.NO_OJO_POR_OJO,new XYSeries(Constante.NO_OJO_POR_OJO));
-        seriesSegunEstrategiaCantidad.put(Constante.OJO_POR_OJO,new XYSeries(Constante.OJO_POR_OJO));
-        seriesSegunEstrategiaCantidad.put(Constante.TRAICION,new XYSeries(Constante.TRAICION));
+        putSeriesSegunEstrategiaCantidad();
     }
     
     static {
-        seriesSegunEstrategiaPuntaje.put(Constante.AL_AZAR,new XYSeries(Constante.AL_AZAR));
-        seriesSegunEstrategiaPuntaje.put(Constante.COOPERA,new XYSeries(Constante.COOPERA));
-        seriesSegunEstrategiaPuntaje.put(Constante.NO_OJO_POR_OJO,new XYSeries(Constante.NO_OJO_POR_OJO));
-        seriesSegunEstrategiaPuntaje.put(Constante.OJO_POR_OJO,new XYSeries(Constante.OJO_POR_OJO));
-        seriesSegunEstrategiaPuntaje.put(Constante.TRAICION,new XYSeries(Constante.TRAICION));
+        putSeriesSegunEstrategiaPuntaje();
     }
     
     
-    public void graficoCantidadIndividuos() {
+    public static void graficoCantidadIndividuos() {
         XYSeriesCollection dataset = new XYSeriesCollection();
 
         for(XYSeries serie : seriesSegunEstrategiaCantidad.values()) {
@@ -69,7 +68,7 @@ public class Grafico {
     }
     
     
-    public void graficoPuntajePorEstrategia() {
+    public static void graficoPuntajePorEstrategia() {
         
         XYSeriesCollection dataset = new XYSeriesCollection();
 
@@ -92,6 +91,22 @@ public class Grafico {
         ChartFrame frame = new ChartFrame("Ejemplo Grafica Lineal", chart);
         frame.pack();
         frame.setVisible(true);
+    }
+    
+    private static void putSeriesSegunEstrategiaCantidad() {
+        seriesSegunEstrategiaCantidad.put(Constante.AL_AZAR,new XYSeries(Constante.AL_AZAR));
+        seriesSegunEstrategiaCantidad.put(Constante.COOPERA,new XYSeries(Constante.COOPERA));
+        seriesSegunEstrategiaCantidad.put(Constante.NO_OJO_POR_OJO,new XYSeries(Constante.NO_OJO_POR_OJO));
+        seriesSegunEstrategiaCantidad.put(Constante.OJO_POR_OJO,new XYSeries(Constante.OJO_POR_OJO));
+        seriesSegunEstrategiaCantidad.put(Constante.TRAICION,new XYSeries(Constante.TRAICION));
+    }
+    
+    private static void putSeriesSegunEstrategiaPuntaje() {
+        seriesSegunEstrategiaPuntaje.put(Constante.AL_AZAR,new XYSeries(Constante.AL_AZAR));
+        seriesSegunEstrategiaPuntaje.put(Constante.COOPERA,new XYSeries(Constante.COOPERA));
+        seriesSegunEstrategiaPuntaje.put(Constante.NO_OJO_POR_OJO,new XYSeries(Constante.NO_OJO_POR_OJO));
+        seriesSegunEstrategiaPuntaje.put(Constante.OJO_POR_OJO,new XYSeries(Constante.OJO_POR_OJO));
+        seriesSegunEstrategiaPuntaje.put(Constante.TRAICION,new XYSeries(Constante.TRAICION));
     }
    
 }

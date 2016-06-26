@@ -144,9 +144,8 @@ public class Menu extends JFrame {
                 } catch (Exception e1) {
                     e1.printStackTrace();
                 }
-                Grafico grafico = new Grafico();
-                grafico.graficoCantidadIndividuos();
-                grafico.graficoPuntajePorEstrategia();
+                Grafico.graficoCantidadIndividuos();
+                Grafico.graficoPuntajePorEstrategia();
             }
         };
     }
