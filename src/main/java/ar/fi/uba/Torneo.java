@@ -16,7 +16,6 @@ public class Torneo {
     Long media = 0L;
     Integer generaciones;
     Integer rondas;
-    GuardaPuntajePorEstrategia puntajesPorGeneracion;
     
     public Torneo(List<JugadoresPorEstrategia> jugadores) {
         this.jugadores = jugadores;
@@ -24,7 +23,6 @@ public class Torneo {
         this.jugarRonda = new JugarRonda();
         this.generaciones = Constante.GENERACIONES;
         this.rondas = Constante.RONDAS;
-        this.puntajesPorGeneracion = new GuardaPuntajePorEstrategia();
     }
 
     public Torneo(List<JugadoresPorEstrategia> jugadores, Integer generaciones, Integer rondas) {
@@ -33,7 +31,6 @@ public class Torneo {
         this.jugarRonda = new JugarRonda();
         this.generaciones = generaciones;
         this.rondas = rondas;
-        this.puntajesPorGeneracion = new GuardaPuntajePorEstrategia();
 
     }
 
@@ -142,7 +139,4 @@ public class Torneo {
         }
     }
     
-    public GuardaPuntajePorEstrategia getPuntajesPorGeneracion() {
-        return puntajesPorGeneracion;
-    }  
 }
