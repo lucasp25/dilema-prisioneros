@@ -137,15 +137,16 @@ public class Menu extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 Configuracion conf = new Configuracion();
                 Torneo torneo;
+                Grafico grafico = new Grafico();
                 try {
                     torneo = new Torneo(conf.cargarEstrategias(), Integer.valueOf(generacionText.getText()),
-                            Integer.valueOf(rondaText.getText()));
+                            Integer.valueOf(rondaText.getText()),grafico);
                     torneo.jugar();
                 } catch (Exception e1) {
                     e1.printStackTrace();
                 }
-                Grafico.graficoCantidadIndividuos();
-                Grafico.graficoPuntajePorEstrategia();
+                grafico.graficoCantidadIndividuos();
+                grafico.graficoPuntajePorEstrategia();
             }
         };
     }
