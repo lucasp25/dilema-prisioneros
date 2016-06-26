@@ -77,9 +77,9 @@ public class Grafico {
         }
 
         JFreeChart chart = ChartFactory.createXYLineChart(
-                "Individuos x Generaciones", // Título
+                "Puntaje x Generaciones", // Título
                 "Numero de Generacion", // Etiqueta Coordenada X
-                "Puntaje por Estrategia", // Etiqueta Coordenada Y
+                "Puntaje Obtenido", // Etiqueta Coordenada Y
                 dataset, // Datos
                 PlotOrientation.VERTICAL,
                 true, 

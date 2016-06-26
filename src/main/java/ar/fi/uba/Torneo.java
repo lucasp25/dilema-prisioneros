@@ -44,9 +44,11 @@ public class Torneo {
 
     public void jugar() throws Exception {
 
-        Integer generacion = 1;
-
-        mostrarCantidadIndividuo(0);
+        Integer generacion = 0;
+        inicializarMapDePuntajes();
+        calcularPuntosPorEstrategia(generacion);
+        mostrarCantidadIndividuo(generacion);
+        generacion++;
         while (generacion <= this.generaciones) {
             Integer ronda = 1;
             while (ronda <= this.rondas) {
