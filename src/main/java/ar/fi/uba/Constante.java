@@ -4,7 +4,7 @@ public class Constante {
     
     public static final Integer GENERACIONES = 20;
     public static final Integer RONDAS = 10;
-    public static final Integer INDIVIDUOS = 10;
+    public static final Integer INDIVIDUOS = 100;
     public static final Integer NACIMIENTOS = 2;
     public static final Integer DECESOS = 1;
     public static final String  PACKAGE_ESTRATEGIAS =  "ar.fi.uba.estrategias.";
