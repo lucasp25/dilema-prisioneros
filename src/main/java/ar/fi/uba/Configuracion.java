@@ -5,16 +5,16 @@ import java.util.List;
 
 import ar.fi.uba.estrategias.AlAzar;
 import ar.fi.uba.estrategias.Coopera;
-import ar.fi.uba.estrategias.Jugador;
+import ar.fi.uba.estrategias.JugadoresPorEstrategia;
 import ar.fi.uba.estrategias.NoOjoPorOjo;
 import ar.fi.uba.estrategias.OjoPorOjo;
 import ar.fi.uba.estrategias.Traicion;
 
 public class Configuracion {
     
-    public List<List<Jugador>> cargarEstrategias() {
+    public List<JugadoresPorEstrategia> cargarEstrategias() throws Exception {
         
-        List<List<Jugador>> jugadores = new ArrayList<>();
+        List<JugadoresPorEstrategia> jugadores = new ArrayList<>();
         jugadores.add(crearTraicioneros());
         jugadores.add(crearCooperadores());
         jugadores.add(crearOjoPorOjo());
@@ -26,47 +26,47 @@ public class Configuracion {
      
     
     
-    private static List<Jugador> crearTraicioneros() {
-        List<Jugador> traicioneros = new ArrayList<>();
+    private static JugadoresPorEstrategia crearTraicioneros() throws Exception {
+        JugadoresPorEstrategia traicioneros = new JugadoresPorEstrategia(Constante.TRAICION);
         
         for ( Integer i = 1; i <= Constante.INDIVIDUOS; i ++ ) {
-            traicioneros.add(new Traicion());
+            traicioneros.addJugador(new Traicion());
         }
         return traicioneros; 
     }
     
-    private static List<Jugador> crearCooperadores() {
-        List<Jugador> traicioneros = new ArrayList<>();
+    private static JugadoresPorEstrategia crearCooperadores() throws Exception {
+        JugadoresPorEstrategia traicioneros = new JugadoresPorEstrategia(Constante.COOPERA);
         
         for ( Integer i = 1; i <= Constante.INDIVIDUOS; i ++ ) {
-            traicioneros.add(new Coopera());
+            traicioneros.addJugador(new Coopera());
         }
         return traicioneros; 
     }
     
-    private static List<Jugador> crearOjoPorOjo() {
-        List<Jugador> traicioneros = new ArrayList<>();
+    private static JugadoresPorEstrategia crearOjoPorOjo() throws Exception {
+        JugadoresPorEstrategia traicioneros = new JugadoresPorEstrategia(Constante.OJO_POR_OJO);
         
         for ( Integer i = 1; i <= Constante.INDIVIDUOS; i ++ ) {
-            traicioneros.add(new OjoPorOjo());
+            traicioneros.addJugador(new OjoPorOjo());
         }
         return traicioneros; 
     } 
     
-    private static List<Jugador> crearNoOjoPorOjo() {
-        List<Jugador> traicioneros = new ArrayList<>();
+    private static JugadoresPorEstrategia crearNoOjoPorOjo() throws Exception {
+        JugadoresPorEstrategia traicioneros = new JugadoresPorEstrategia(Constante.NO_OJO_POR_OJO);
         
         for ( Integer i = 1; i <= Constante.INDIVIDUOS; i ++ ) {
-            traicioneros.add(new NoOjoPorOjo());
+            traicioneros.addJugador(new NoOjoPorOjo());
         }
         return traicioneros; 
     } 
     
-    private static List<Jugador> crearAlAzar() {
-        List<Jugador> traicioneros = new ArrayList<>();
+    private static JugadoresPorEstrategia crearAlAzar() throws Exception {
+        JugadoresPorEstrategia traicioneros = new JugadoresPorEstrategia(Constante.AL_AZAR);
         
         for ( Integer i = 1; i <= Constante.INDIVIDUOS; i ++ ) {
-            traicioneros.add(new AlAzar());
+            traicioneros.addJugador(new AlAzar());
         }
         return traicioneros; 
     } 

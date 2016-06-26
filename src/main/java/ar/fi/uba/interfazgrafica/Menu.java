@@ -33,12 +33,12 @@ public class Menu extends JFrame {
     private JTextField generacionText = new JTextField(4);
     private JTextField rondaText = new JTextField(4);
 
-    public Menu() {
+    public Menu() throws Exception {
 
         initUI();
     }
 
-    private void initUI() {
+    private void initUI() throws Exception {
 
         createMenuBar();
 
@@ -48,7 +48,7 @@ public class Menu extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
-    private void createMenuBar() {
+    private void createMenuBar() throws Exception {
 
         JMenuBar menubar = new JMenuBar();
         ImageIcon icon = new ImageIcon("descarga.png");
@@ -81,7 +81,6 @@ public class Menu extends JFrame {
 
         generacionText.addKeyListener(limitarCantidadDeCaraceres(generacionText));
         rondaText.addKeyListener(limitarCantidadDeCaraceres(rondaText));
-        
 
         JButton jugarBoton = new JButton("Jugar");
         jugarBoton.addActionListener(accionarBotonJugar());
@@ -133,13 +132,18 @@ public class Menu extends JFrame {
         };
     }
 
-    private ActionListener accionarBotonJugar() {
+    private ActionListener accionarBotonJugar() throws Exception {
         return new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Configuracion conf = new Configuracion();
-                Torneo torneo = new Torneo(conf.cargarEstrategias(), Integer.valueOf(generacionText.getText()), 
-                        Integer.valueOf(rondaText.getText()));
-                torneo.jugar();
+                Torneo torneo;
+                try {
+                    torneo = new Torneo(conf.cargarEstrategias(), Integer.valueOf(generacionText.getText()),
+                            Integer.valueOf(rondaText.getText()));
+                    torneo.jugar();
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
                 Grafico grafico = new Grafico();
             }
         };

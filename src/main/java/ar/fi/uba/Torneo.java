@@ -5,17 +5,19 @@ import java.util.List;
 import java.util.Map;
 
 import ar.fi.uba.estrategias.Jugador;
+import ar.fi.uba.estrategias.JugadoresPorEstrategia;
+import ar.fi.uba.graficos.Grafico;
 
 public class Torneo {
 
-    List<List<Jugador>> jugadores;
+    List<JugadoresPorEstrategia> jugadores;
     Map<String, Long> puntajesPorEstrategia;
     JugarRonda jugarRonda;
     Long media = 0L;
     Integer generaciones;
     Integer rondas;
 
-    public Torneo(List<List<Jugador>> jugadores) {
+    public Torneo(List<JugadoresPorEstrategia> jugadores) {
         this.jugadores = jugadores;
         this.puntajesPorEstrategia = new HashMap<>();
         this.jugarRonda = new JugarRonda();
@@ -24,7 +26,7 @@ public class Torneo {
 
     }
 
-    public Torneo(List<List<Jugador>> jugadores, Integer generaciones, Integer rondas) {
+    public Torneo(List<JugadoresPorEstrategia> jugadores, Integer generaciones, Integer rondas) {
         this.jugadores = jugadores;
         this.puntajesPorEstrategia = new HashMap<>();
         this.jugarRonda = new JugarRonda();
@@ -41,19 +43,18 @@ public class Torneo {
         puntajesPorEstrategia.put(Constante.AL_AZAR, new Long(0));
     }
 
-    public void jugar() {
+    public void jugar() throws Exception {
 
         Integer generacion = 1;
 
-        inicializarMapDePuntajes();
-
+        mostrarCantidadIndividuo(0);
         while (generacion <= this.generaciones) {
             Integer ronda = 1;
             while (ronda <= this.rondas) {
-                for (List<Jugador> jugadoresEstrategiaRonda : this.jugadores) {
-                    for (Jugador jugador1 : jugadoresEstrategiaRonda) {
-                        for (List<Jugador> jugadoresEstrategia : this.jugadores) {
-                            for (Jugador jugador2 : jugadoresEstrategia) {
+                for (JugadoresPorEstrategia jugadoresEstrategiaRonda : this.jugadores) {
+                    for (Jugador jugador1 : jugadoresEstrategiaRonda.getJugadores()) {
+                        for (JugadoresPorEstrategia jugadoresEstrategia : this.jugadores) {
+                            for (Jugador jugador2 : jugadoresEstrategia.getJugadores()) {
                                 this.jugarRonda.calcular(jugador1, jugador2);
                             }
                         }
@@ -61,21 +62,22 @@ public class Torneo {
                 }
                 ronda++;
             }
-            generacion++;
+            inicializarMapDePuntajes();
             calcularPuntosPorEstrategia();
             agregarOQuitarIndividuosSegunMedia();
-            mostrarCantidadIndividuo();
+            mostrarCantidadIndividuo(generacion);
+            generacion++;
             // TODO calcular puntos de estrategias por generacion y guardar;
             // agregar y sacar individuos en estrategias.
         }
     }
 
     private Integer calcularPuntosPorEstrategia() {
-        
+
         media = 0L;
-        for (List<Jugador> jugadoresEstrategiaRonda : this.jugadores) {
-            String estrategia = jugadoresEstrategiaRonda.get(0).estrategia();
-            for (Jugador jugador1 : jugadoresEstrategiaRonda) {
+        for (JugadoresPorEstrategia jugadoresEstrategiaRonda : this.jugadores) {
+            String estrategia = jugadoresEstrategiaRonda.getEstrategia();
+            for (Jugador jugador1 : jugadoresEstrategiaRonda.getJugadores()) {
                 puntajesPorEstrategia.put(jugador1.estrategia(),
                         puntajesPorEstrategia.get(jugador1.estrategia()) + jugador1.getPuntos());
                 media += jugador1.getPuntos();
@@ -84,26 +86,27 @@ public class Torneo {
         }
         media = media / 5;
         System.out.println("Media:" + media);
-        
+
         return null;
     }
 
-    private void agregarOQuitarIndividuosSegunMedia() {
+    private void agregarOQuitarIndividuosSegunMedia() throws Exception {
 
         for (String key : puntajesPorEstrategia.keySet()) {
             if (puntajesPorEstrategia.get(key) >= media) {
-                for (List<Jugador> jugadoresEstrategiaRonda : this.jugadores) {
-                    if (jugadoresEstrategiaRonda.get(0).estrategia().equalsIgnoreCase(key)) {
+                for (JugadoresPorEstrategia jugadoresEstrategiaRonda : this.jugadores) {
+                    if (jugadoresEstrategiaRonda.getEstrategia().equalsIgnoreCase(key)) {
                         for (Integer i = 1; i <= Constante.NACIMIENTOS; i++) {
-                            jugadoresEstrategiaRonda.add(determinarEstrategia(jugadoresEstrategiaRonda.get(0)));
+                            jugadoresEstrategiaRonda
+                                    .addJugador(determinarEstrategia(jugadoresEstrategiaRonda.getEstrategia()));
                         }
                     }
                 }
             } else {
-                for (List<Jugador> jugadoresEstrategiaRonda : this.jugadores) {
-                    if (jugadoresEstrategiaRonda.get(0).estrategia().equalsIgnoreCase(key)) {
+                for (JugadoresPorEstrategia jugadoresEstrategiaRonda : this.jugadores) {
+                    if (jugadoresEstrategiaRonda.getEstrategia().equalsIgnoreCase(key)) {
                         for (Integer i = 1; i <= Constante.DECESOS; i++) {
-                            jugadoresEstrategiaRonda.remove(jugadoresEstrategiaRonda.get(0));
+                            jugadoresEstrategiaRonda.removeJugador();
                         }
                     }
                 }
@@ -111,11 +114,11 @@ public class Torneo {
         }
     }
 
-    private Jugador determinarEstrategia(Jugador jugador) {
+    private Jugador determinarEstrategia(String estrategia) {
         Class<?> clase = null;
         Jugador jug = null;
         try {
-            clase = Class.forName(Constante.PACKAGE_ESTRATEGIAS + jugador.estrategia());
+            clase = Class.forName(Constante.PACKAGE_ESTRATEGIAS + estrategia);
             jug = (Jugador) clase.newInstance();
         } catch (ClassNotFoundException e) {
             // TODO Auto-generated catch block
@@ -130,11 +133,13 @@ public class Torneo {
         return jug;
     }
 
-    private void mostrarCantidadIndividuo() {
-        for (List<Jugador> jugadoresEstrategiaRonda : this.jugadores) {
-            String estrategia = jugadoresEstrategiaRonda.get(0).estrategia();
-            System.out.println("Cantidad de individuos de estrategia " + estrategia + ":");
-            System.out.println("jugadoresEstrategiaRonda.size()");
+    private void mostrarCantidadIndividuo(Integer generacion) {
+        for (JugadoresPorEstrategia jugadoresEstrategiaRonda : this.jugadores) {
+            String estrategia = jugadoresEstrategiaRonda.getEstrategia();
+            System.out.println(
+                    "Cantidad de individuos de estrategia " + estrategia + ": " + jugadoresEstrategiaRonda.getJugadores().size());
+
+            Grafico.agregarDatos(estrategia, generacion, jugadoresEstrategiaRonda.getJugadores().size());
         }
     }
 }
