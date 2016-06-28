@@ -33,7 +33,7 @@ public class Grafico {
         seriesSegunEstrategiaCantidad.get(estrategia).add(generacion, cantIndividuos);
     }
     
-    public void agregarDatosPuntaje(String estrategia, Integer generacion, Long puntaje) {
+    public void agregarDatosPuntaje(String estrategia, Integer generacion, Double puntaje) {
         seriesSegunEstrategiaPuntaje.get(estrategia).add(generacion, puntaje);
     }
     

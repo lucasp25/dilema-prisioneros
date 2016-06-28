@@ -37,5 +37,9 @@ public abstract class Jugador implements Estrategia {
     public Long getPuntos() {
         return puntos;
     }
+    
+    public void reiniciarPuntos() {
+        this.puntos = 0L;
+    }
 
 }
