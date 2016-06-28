@@ -17,21 +17,24 @@ public class Torneo {
     Long media = 0L;
     Integer generaciones;
     Integer rondas;
-
-    public Torneo(List<JugadoresPorEstrategia> jugadores) {
+    Grafico grafico;
+    
+    public Torneo(List<JugadoresPorEstrategia> jugadores, Grafico grafico) {
         this.jugadores = jugadores;
         this.puntajesPorEstrategia = new HashMap<>();
         this.jugarRonda = new JugarRonda();
         this.generaciones = Constante.GENERACIONES;
         this.rondas = Constante.RONDAS;
+        this.grafico = grafico;
     }
 
-    public Torneo(List<JugadoresPorEstrategia> jugadores, Integer generaciones, Integer rondas) {
+    public Torneo(List<JugadoresPorEstrategia> jugadores, Integer generaciones, Integer rondas, Grafico grafico)  {
         this.jugadores = jugadores;
         this.puntajesPorEstrategia = new HashMap<>();
         this.jugarRonda = new JugarRonda();
         this.generaciones = generaciones;
         this.rondas = rondas;
+        this.grafico = grafico;
 
     }
 
@@ -83,7 +86,7 @@ public class Torneo {
                 media += jugador1.getPuntos();
             }
             System.out.println("puntaje " + estrategia + " " + puntajesPorEstrategia.get(estrategia));
-            Grafico.agregarDatosPuntaje(estrategia, generacion, puntajesPorEstrategia.get(estrategia));
+            grafico.agregarDatosPuntaje(estrategia, generacion, puntajesPorEstrategia.get(estrategia));
         }
         media = media / 5;
         System.out.println("Media:" + media);
@@ -193,7 +196,7 @@ public class Torneo {
             System.out.println("Cantidad de individuos de estrategia " + estrategia + ": "
                     + jugadoresEstrategiaRonda.getJugadores().size());
 
-            Grafico.agregarDatosCantidad(estrategia, generacion, jugadoresEstrategiaRonda.getJugadores().size());
+            grafico.agregarDatosCantidad(estrategia, generacion, jugadoresEstrategiaRonda.getJugadores().size());
         }
     }
 

@@ -17,33 +17,27 @@ public class Grafico {
     private static Map<String, XYSeries> seriesSegunEstrategiaCantidad = new HashMap<>();
     private static Map<String, XYSeries> seriesSegunEstrategiaPuntaje = new HashMap<>();
     
-    public Grafico() {}
+    public Grafico() {
+        putSeriesSegunEstrategiaCantidad();
+        putSeriesSegunEstrategiaPuntaje();
+    }
     
-    public static void limpiarSeries() {
+    public void limpiarSeries() {
         putSeriesSegunEstrategiaCantidad();
         seriesSegunEstrategiaCantidad = new HashMap<>();
         putSeriesSegunEstrategiaPuntaje();
         seriesSegunEstrategiaPuntaje = new HashMap<>();
     }
     
-    public static void agregarDatosCantidad(String estrategia, Integer generacion, Integer cantIndividuos) {
+    public void agregarDatosCantidad(String estrategia, Integer generacion, Integer cantIndividuos) {
         seriesSegunEstrategiaCantidad.get(estrategia).add(generacion, cantIndividuos);
     }
     
-    public static void agregarDatosPuntaje(String estrategia, Integer generacion, Long puntaje) {
+    public void agregarDatosPuntaje(String estrategia, Integer generacion, Long puntaje) {
         seriesSegunEstrategiaPuntaje.get(estrategia).add(generacion, puntaje);
     }
     
-    static {
-        putSeriesSegunEstrategiaCantidad();
-    }
-    
-    static {
-        putSeriesSegunEstrategiaPuntaje();
-    }
-    
-    
-    public static void graficoCantidadIndividuos() {
+    public  void graficoCantidadIndividuos() {
         XYSeriesCollection dataset = new XYSeriesCollection();
 
         for(XYSeries serie : seriesSegunEstrategiaCantidad.values()) {
@@ -62,13 +56,13 @@ public class Grafico {
         );
 
         // Mostramos la grafica en pantalla
-        ChartFrame frame = new ChartFrame("Ejemplo Grafica Lineal", chart);
+        ChartFrame frame = new ChartFrame("", chart);
         frame.pack();
         frame.setVisible(true);
     }
     
     
-    public static void graficoPuntajePorEstrategia() {
+    public void graficoPuntajePorEstrategia() {
         
         XYSeriesCollection dataset = new XYSeriesCollection();
 
@@ -88,12 +82,12 @@ public class Grafico {
         );
 
         // Mostramos la grafica en pantalla
-        ChartFrame frame = new ChartFrame("Ejemplo Grafica Lineal", chart);
+        ChartFrame frame = new ChartFrame("", chart);
         frame.pack();
         frame.setVisible(true);
     }
     
-    private static void putSeriesSegunEstrategiaCantidad() {
+    private void putSeriesSegunEstrategiaCantidad() {
         seriesSegunEstrategiaCantidad.put(Constante.AL_AZAR,new XYSeries(Constante.AL_AZAR));
         seriesSegunEstrategiaCantidad.put(Constante.COOPERA,new XYSeries(Constante.COOPERA));
         seriesSegunEstrategiaCantidad.put(Constante.NO_OJO_POR_OJO,new XYSeries(Constante.NO_OJO_POR_OJO));
@@ -101,7 +95,7 @@ public class Grafico {
         seriesSegunEstrategiaCantidad.put(Constante.TRAICION,new XYSeries(Constante.TRAICION));
     }
     
-    private static void putSeriesSegunEstrategiaPuntaje() {
+    private void putSeriesSegunEstrategiaPuntaje() {
         seriesSegunEstrategiaPuntaje.put(Constante.AL_AZAR,new XYSeries(Constante.AL_AZAR));
         seriesSegunEstrategiaPuntaje.put(Constante.COOPERA,new XYSeries(Constante.COOPERA));
         seriesSegunEstrategiaPuntaje.put(Constante.NO_OJO_POR_OJO,new XYSeries(Constante.NO_OJO_POR_OJO));
