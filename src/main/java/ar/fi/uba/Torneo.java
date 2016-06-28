@@ -140,7 +140,7 @@ public class Torneo {
         for (int posicion = estrategiasPerdedoras.size(); posicion > 1; posicion--) {
             Integer decesosOtorgados = 2*(decesosFaltantes/3);
             for (Integer i = 1; i <= decesosOtorgados; i++) {
-                estrategiasPerdedoras.get(posicion-1).removeJugador();
+                if(estrategiasPerdedoras.get(posicion-1) != null) estrategiasPerdedoras.get(posicion-1).removeJugador();
                 decesosFaltantes--;
             }
             if(posicion+1 == estrategiasPerdedoras.size()) {
