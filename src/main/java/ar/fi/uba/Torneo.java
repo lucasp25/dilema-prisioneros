@@ -1,5 +1,6 @@
 package ar.fi.uba;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +17,7 @@ public class Torneo {
     Long media = 0L;
     Integer generaciones;
     Integer rondas;
-    
+
     public Torneo(List<JugadoresPorEstrategia> jugadores) {
         this.jugadores = jugadores;
         this.puntajesPorEstrategia = new HashMap<>();
@@ -90,26 +91,81 @@ public class Torneo {
 
     private void agregarOQuitarIndividuosSegunMedia() throws Exception {
 
+        List<JugadoresPorEstrategia> estrategiasGanadoras = new ArrayList<>();
+        List<JugadoresPorEstrategia> estrategiasPerdedoras = new ArrayList<>();
         for (String key : puntajesPorEstrategia.keySet()) {
             if (puntajesPorEstrategia.get(key) >= media) {
                 for (JugadoresPorEstrategia jugadoresEstrategiaRonda : this.jugadores) {
                     if (jugadoresEstrategiaRonda.getEstrategia().equalsIgnoreCase(key)) {
-                        for (Integer i = 1; i <= Constante.NACIMIENTOS; i++) {
-                            jugadoresEstrategiaRonda
-                                    .addJugador(determinarEstrategia(jugadoresEstrategiaRonda.getEstrategia()));
-                        }
+                        estrategiasGanadoras.add(jugadoresEstrategiaRonda);
+                        // for (Integer i = 1; i <= Constante.NACIMIENTOS; i++)
+                        // {
+                        // jugadoresEstrategiaRonda
+                        // .addJugador(determinarEstrategia(jugadoresEstrategiaRonda.getEstrategia()));
+                        // }
                     }
                 }
             } else {
                 for (JugadoresPorEstrategia jugadoresEstrategiaRonda : this.jugadores) {
                     if (jugadoresEstrategiaRonda.getEstrategia().equalsIgnoreCase(key)) {
-                        for (Integer i = 1; i <= Constante.DECESOS; i++) {
-                            jugadoresEstrategiaRonda.removeJugador();
-                        }
+                        estrategiasPerdedoras.add(jugadoresEstrategiaRonda);
+//                         for (Integer i = 1; i <= Constante.DECESOS; i++) {
+//                         jugadoresEstrategiaRonda.removeJugador();
+//                         }
                     }
                 }
             }
         }
+
+        estrategiasGanadoras = sortEstrategiasSegunPuntaje(estrategiasGanadoras, puntajesPorEstrategia);
+        Integer nacimientosFaltantes = Constante.NACIMIENTOS;
+        for (int posicion = 1; posicion < estrategiasGanadoras.size(); posicion++) {
+            Integer nacimientosOtorgados = 2*(nacimientosFaltantes/3);
+            for (Integer i = 1; i <= nacimientosOtorgados; i++) {
+                estrategiasGanadoras.get(posicion-1).addJugador(determinarEstrategia(estrategiasGanadoras.get(posicion-1).getEstrategia()));
+                nacimientosFaltantes--;
+            }
+            if(posicion+1 == estrategiasGanadoras.size()) {
+                for (Integer i = 1; i <= nacimientosFaltantes; i++) {
+                    estrategiasGanadoras.get(posicion).addJugador(determinarEstrategia(estrategiasGanadoras.get(posicion).getEstrategia()));
+                }
+            }
+        }
+        
+        estrategiasPerdedoras = sortEstrategiasSegunPuntaje(estrategiasPerdedoras, puntajesPorEstrategia);
+        Integer decesosFaltantes = Constante.DECESOS;
+        for (int posicion = estrategiasPerdedoras.size(); posicion > 1; posicion--) {
+            Integer decesosOtorgados = 2*(decesosFaltantes/3);
+            for (Integer i = 1; i <= decesosOtorgados; i++) {
+                estrategiasPerdedoras.get(posicion-1).removeJugador();
+                decesosFaltantes--;
+            }
+            if(posicion+1 == estrategiasPerdedoras.size()) {
+                for (Integer i = 1; i <= decesosFaltantes; i++) {
+                    estrategiasPerdedoras.get(posicion-2).removeJugador();
+                }
+            }
+        }
+    }
+
+    private List<JugadoresPorEstrategia> sortEstrategiasSegunPuntaje(List<JugadoresPorEstrategia> estrategias,
+            Map<String, Long> puntajes) {
+        List<JugadoresPorEstrategia> resultado = new ArrayList<>();
+        List<JugadoresPorEstrategia> aux = new ArrayList<>(estrategias);
+        for (int i = 0; i < estrategias.size(); i++) {
+            JugadoresPorEstrategia max = null;
+            Long puntajeMax = 0L;
+            for (JugadoresPorEstrategia estrategia : aux) {
+                Long puntaje = puntajes.get(estrategia.getEstrategia());
+                if (puntaje > puntajeMax) {
+                    puntajeMax = puntaje;
+                    max = estrategia;
+                }
+            }
+            resultado.add(max);
+            aux.remove(max);
+        }
+        return resultado;
     }
 
     private Jugador determinarEstrategia(String estrategia) {
@@ -134,11 +190,11 @@ public class Torneo {
     private void mostrarCantidadIndividuo(Integer generacion) {
         for (JugadoresPorEstrategia jugadoresEstrategiaRonda : this.jugadores) {
             String estrategia = jugadoresEstrategiaRonda.getEstrategia();
-            System.out.println(
-                    "Cantidad de individuos de estrategia " + estrategia + ": " + jugadoresEstrategiaRonda.getJugadores().size());
+            System.out.println("Cantidad de individuos de estrategia " + estrategia + ": "
+                    + jugadoresEstrategiaRonda.getJugadores().size());
 
             Grafico.agregarDatosCantidad(estrategia, generacion, jugadoresEstrategiaRonda.getJugadores().size());
         }
     }
-    
+
 }
