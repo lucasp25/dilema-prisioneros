@@ -30,7 +30,7 @@ public class Menu extends JFrame {
      */
     private static final long serialVersionUID = 1L;
 
-    private static final Integer LIMITE_CARATERES = 2;
+    private static final Integer LIMITE_CARATERES = 3;
     private JTextField generacionText = new JTextField(4);
     private JTextField rondaText = new JTextField(4);
     
@@ -57,7 +57,7 @@ public class Menu extends JFrame {
         createMenuBar();
 
         setTitle("El Dilema del Prisionero");
-        setSize(500, 300);
+        setSize(500, 200);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
