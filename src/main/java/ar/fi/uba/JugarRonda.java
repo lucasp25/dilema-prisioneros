@@ -11,6 +11,11 @@ public class JugarRonda {
     
     
     public void calcular(Jugador jugador1, Jugador jugador2) {
+        
+        Boolean ultimaJugada1 = jugador1.getUltimaJugada();
+        
+        jugador1.resultado(jugador2.getUltimaJugada());
+        jugador2.resultado(ultimaJugada1);
        
         if (jugador1.jugar() && jugador2.jugar())  {
                jugador1.incrementarPuntuacion(AMBOS_COOPERAN);
@@ -25,9 +30,6 @@ public class JugarRonda {
             jugador1.incrementarPuntuacion(TRAICIONA_EL_OTRO_COOPERA);
             jugador2.incrementarPuntuacion(COOPERA_EL_OTRO_TRAICIONA);
         }
-        
-        jugador1.resultado(jugador2.getUltimaJugada());
-        jugador2.resultado(jugador1.getUltimaJugada());
     }
     
 
