@@ -10,6 +10,7 @@ import java.awt.event.KeyListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuBar;
@@ -32,6 +33,19 @@ public class Menu extends JFrame {
     private static final Integer LIMITE_CARATERES = 2;
     private JTextField generacionText = new JTextField(4);
     private JTextField rondaText = new JTextField(4);
+    
+    //check
+    JCheckBox checkboxTracion;
+    JCheckBox checkboxCoopera;
+    JCheckBox checkboxOjoPorOjo;
+    JCheckBox checkboxNoOjoPorOjo;
+    JCheckBox checkboxAlAzar;
+    
+    private Boolean traicion = true;
+    private Boolean coopera = true;
+    private Boolean noOjoPorOjo = true;
+    private Boolean ojoPorOjo = true;
+    private Boolean alAzar = true;
 
     public Menu() throws Exception {
 
@@ -95,6 +109,25 @@ public class Menu extends JFrame {
         panel.add(rondaLabel);
         panel.add(rondaText);
         panel.add(jugarBoton);
+        
+        /*----------------------------------------*/
+        checkboxTracion = new JCheckBox("Traicion", true);
+        checkboxCoopera = new JCheckBox("Coopera", true);
+        checkboxOjoPorOjo = new JCheckBox("Ojo por Ojo", true);
+        checkboxNoOjoPorOjo = new JCheckBox("No Ojo por Ojo", true);
+        checkboxAlAzar = new JCheckBox("Al Azar",true);
+        
+        checkboxTracion.addActionListener(accionarCheckBox());
+        checkboxCoopera.addActionListener(accionarCheckBox());
+        checkboxOjoPorOjo.addActionListener(accionarCheckBox());
+        checkboxNoOjoPorOjo.addActionListener(accionarCheckBox());
+        checkboxAlAzar.addActionListener(accionarCheckBox());
+        
+        panel.add(checkboxTracion);
+        panel.add(checkboxCoopera);
+        panel.add(checkboxOjoPorOjo);
+        panel.add(checkboxNoOjoPorOjo);
+        panel.add(checkboxAlAzar);
 
         // this.add(panelSoloLabel);
         this.add(panel);
@@ -135,19 +168,56 @@ public class Menu extends JFrame {
     private ActionListener accionarBotonJugar() throws Exception {
         return new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                Configuracion conf = new Configuracion();
-                Torneo torneo;
-                Grafico grafico = new Grafico();
-                try {
-                    torneo = new Torneo(conf.cargarEstrategias(), Integer.valueOf(generacionText.getText()),
-                            Integer.valueOf(rondaText.getText()),grafico);
-                    torneo.jugar();
-                } catch (Exception e1) {
-                    e1.printStackTrace();
+                    if(alMenosUnaEstrategia() && generacionesYRondasNoVacios()) {
+                    Configuracion conf = new Configuracion();
+                    Torneo torneo;
+                    Grafico grafico = new Grafico();
+                    try {
+                        torneo = new Torneo(conf.cargarEstrategias(traicion, coopera,ojoPorOjo, noOjoPorOjo, alAzar), Integer.valueOf(generacionText.getText()),
+                                Integer.valueOf(rondaText.getText()),grafico);
+                        torneo.jugar();
+                    } catch (Exception e1) {
+                        e1.printStackTrace();
+                    }
+                    grafico.graficoCantidadIndividuos();
+                    grafico.graficoPuntajePorEstrategia();
                 }
-                grafico.graficoCantidadIndividuos();
-                grafico.graficoPuntajePorEstrategia();
             }
         };
+    }
+    
+    private ActionListener accionarCheckBox() {
+        return new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                JCheckBox checkbox = (JCheckBox) event.getSource();
+                if (checkbox == checkboxTracion) {
+                    traicion = checkbox.isSelected();
+                } else if (checkbox == checkboxCoopera) {
+                    coopera = checkbox.isSelected();
+                } else if (checkbox == checkboxNoOjoPorOjo) {
+                    noOjoPorOjo = checkbox.isSelected();
+                } else if (checkbox == checkboxOjoPorOjo) {
+                    ojoPorOjo = checkbox.isSelected();
+                } else if (checkbox == checkboxAlAzar) {
+                    alAzar = checkbox.isSelected();
+                }
+            }
+        };
+    }
+    
+    private Boolean alMenosUnaEstrategia(){
+        if(traicion || coopera || noOjoPorOjo || ojoPorOjo || alAzar) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    private Boolean generacionesYRondasNoVacios() {
+        if (!generacionText.getText().isEmpty() && !rondaText.getText().isEmpty()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

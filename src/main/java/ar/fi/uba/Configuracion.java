@@ -12,14 +12,14 @@ import ar.fi.uba.estrategias.Traicion;
 
 public class Configuracion {
     
-    public List<JugadoresPorEstrategia> cargarEstrategias() throws Exception {
+    public List<JugadoresPorEstrategia> cargarEstrategias(Boolean traicion, Boolean coopera, Boolean ojoPorOjo, Boolean noOjoPor, Boolean alAzar) throws Exception {
         
         List<JugadoresPorEstrategia> jugadores = new ArrayList<>();
-        jugadores.add(crearTraicioneros());
-        jugadores.add(crearCooperadores());
-        jugadores.add(crearOjoPorOjo());
-        jugadores.add(crearNoOjoPorOjo());
-        jugadores.add(crearAlAzar());
+        if(traicion) jugadores.add(crearTraicioneros());
+        if(coopera) jugadores.add(crearCooperadores());
+        if(ojoPorOjo) jugadores.add(crearOjoPorOjo());
+        if(noOjoPor) jugadores.add(crearNoOjoPorOjo());
+        if(alAzar) jugadores.add(crearAlAzar());
         
         return jugadores;
     }
